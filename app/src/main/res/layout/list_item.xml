@@ -7,9 +7,9 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp" >
 
-    <!-- Name Label -->
+    <!-- Year Label -->
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/year"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="2dip"
@@ -18,22 +18,20 @@
         android:textSize="16sp"
         android:textStyle="bold" />
 
-    <!-- Email label -->
+    <!-- Content label -->
     <TextView
-        android:id="@+id/email"
+        android:id="@+id/content"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="2dip"
         android:textColor="#acacac" />
 
-    <!-- Mobile number label -->
     <TextView
-        android:id="@+id/mobile"
-        android:layout_width="wrap_content"
+        android:id="@+id/link"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="left"
-        android:text="Mobile: "
-        android:textColor="#5d5d5d"
-        android:textStyle="bold" />
+        android:visibility="invisible"/>
+
+
 
 </LinearLayout>

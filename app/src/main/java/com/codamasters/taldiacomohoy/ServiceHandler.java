@@ -1,11 +1,8 @@
-package materialdesign.codamasters.com.materialdesign;
+package com.codamasters.taldiacomohoy;
 
 /**
  * Created by Juan on 17/05/2015.
  */
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -17,6 +14,10 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 public class ServiceHandler {
 
