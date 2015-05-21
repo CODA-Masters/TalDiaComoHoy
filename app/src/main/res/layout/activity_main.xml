@@ -115,6 +115,7 @@
             android:layout_gravity="top|right"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:background="@drawable/ripple"
+            android:src="@drawable/icon_search"
             android:elevation="5dp"
             android:onClick="onFabPressed"
             />

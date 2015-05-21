@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
@@ -12,27 +11,25 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.AccelerateInterpolator;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -49,7 +46,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 
-public class MainActivity extends ListActivity {
+public class MainActivity extends ListActivity{
 
     // Animations
     private View mFab;
@@ -63,6 +60,7 @@ public class MainActivity extends ListActivity {
     private boolean mRevealFlag;
     private float mFabSize;
     private float fabX, fabY;
+    private Palette palette;
 
 
     // Information
@@ -121,6 +119,7 @@ public class MainActivity extends ListActivity {
         int month = datePicker.getMonth();
 
         datePicker.setVisibility(View.GONE);
+        button.setVisibility(View.GONE);
 
         text_uri = text_title = "";
 
@@ -131,6 +130,9 @@ public class MainActivity extends ListActivity {
 
         tv = (TextView) findViewById(R.id.date);
         tv.setText(MainActivity.text_title);
+        Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(),
+                R.drawable.cover);
+        palette = Palette.generate(bitmap);
 
         /*
         ListView lv = getListView();
@@ -264,6 +266,7 @@ public class MainActivity extends ListActivity {
 
             mFab.setVisibility(View.INVISIBLE);
             datePicker.setVisibility(View.VISIBLE);
+            button.setVisibility(View.VISIBLE);
 
             mFabContainer.setBackgroundColor(getResources()
                     .getColor(R.color.brand_accent));
@@ -307,6 +310,7 @@ public class MainActivity extends ListActivity {
         int month = datePicker.getMonth();
 
         datePicker.setVisibility(View.GONE);
+        button.setVisibility(View.GONE);
 
         text_uri = text_title = "";
 
