@@ -19,7 +19,6 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -60,7 +59,6 @@ public class MainActivity extends ListActivity{
     private boolean mRevealFlag;
     private float mFabSize;
     private float fabX, fabY;
-    private Palette palette;
 
 
     // Information
@@ -82,7 +80,6 @@ public class MainActivity extends ListActivity{
 
     // Hashmap for ListView
     ArrayList<HashMap<String, String>> resultList;
-
 
 
     private Button button;
@@ -132,7 +129,6 @@ public class MainActivity extends ListActivity{
         tv.setText(MainActivity.text_title);
         Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(),
                 R.drawable.cover);
-        palette = Palette.generate(bitmap);
 
         /*
         ListView lv = getListView();
@@ -484,7 +480,12 @@ public class MainActivity extends ListActivity{
 
                             if (splited_lines.length > 1) {
 
-                                String text = splited_lines[1];
+                                String text ="";
+
+                                for ( int z=1 ; z<splited_lines.length; z++) {
+                                    text = text.concat(splited_lines[z]);
+                                }
+
 
                                 String enlace = text;
                                 String[] cadenas = enlace.split(".*\\[\\[");
@@ -579,7 +580,7 @@ public class MainActivity extends ListActivity{
             /**
              * Updating parsed JSON data into ListView
              * */
-            ListAdapter adapter = new SimpleAdapter(MainActivity.this, resultList, R.layout.list_item, new String[]{TAG_YEAR, TAG_CONTENT, TAG_LINK}, new int[]{R.id.year, R.id.content, R.id.link});
+            ListAdapter adapter = new SimpleAdapter(MainActivity.this, resultList , R.layout.list_item, new String[]{TAG_YEAR, TAG_CONTENT, TAG_LINK}, new int[]{R.id.year, R.id.content, R.id.link});
 
             setListAdapter(adapter);
 
