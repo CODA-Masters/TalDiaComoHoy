@@ -96,11 +96,17 @@ public class MainActivity extends ListActivity{
     private static String url_es, url_en;
     private TextView tv;
 
-    private static final String INIT_KEY_ES = "== Acontecimientos ==";
-    private static final String INIT_KEY_EN = "==Events==";
+    private static final String INIT_KEY_ES_1 = "==Acontecimientos==";
+    private static final String INIT_KEY_EN_1 = "==Events==";
 
-    private static final String END_KEY_ES = "== Nacimientos ==";
-    private static final String END_KEY_EN = "==Births==";
+    private static final String INIT_KEY_ES_2 = "== Acontecimientos ==";
+    private static final String INIT_KEY_EN_2 = "== Events ==";
+
+    private static final String END_KEY_ES_1 = "==Nacimientos==";
+    private static final String END_KEY_EN_1 = "==Births==";
+
+    private static final String END_KEY_ES_2 = "== Nacimientos ==";
+    private static final String END_KEY_EN_2 = "== Births ==";
 
     private static final String DATA_KEY_ES = "Archivo";
     private static final String DATA_KEY_EN = "File";
@@ -111,7 +117,7 @@ public class MainActivity extends ListActivity{
     private static final String SPLIT_KEY_ES = ":";
     private static final String SPLIT_KEY_EN = "&ndash;";
 
-    private String init_key, end_key, data_key, split_key, url, text_title, title_year;
+    private String init_key_1, init_key_2, end_key_1, end_key_2, data_key, split_key, url, text_title, title_year;
 
 
     private InterstitialAd interstitialAd;
@@ -176,8 +182,10 @@ public class MainActivity extends ListActivity{
         switch(Locale.getDefault().getDisplayLanguage()){
             case "español": url = url_es;
                 text_title = text_title_es;
-                init_key = INIT_KEY_ES;
-                end_key = END_KEY_ES;
+                init_key_1 = INIT_KEY_ES_1;
+                end_key_1 = END_KEY_ES_1;
+                init_key_2 = INIT_KEY_ES_2;
+                end_key_2 = END_KEY_ES_2;
                 data_key = DATA_KEY_ES;
                 split_key = SPLIT_KEY_ES;
                 title_year = YEAR_ES;
@@ -185,16 +193,20 @@ public class MainActivity extends ListActivity{
                 break;
             case "english": url = url_en;
                 text_title = text_title_en;
-                init_key = INIT_KEY_EN;
-                end_key = END_KEY_EN;
+                init_key_1 = INIT_KEY_EN_1;
+                end_key_1 = END_KEY_EN_1;
+                init_key_2 = INIT_KEY_EN_2;
+                end_key_2 = END_KEY_EN_2;
                 data_key = DATA_KEY_EN;
                 split_key = SPLIT_KEY_EN;
                 title_year = YEAR_EN;
                 break;
             default: url = url_en;
                 text_title = text_title_en;
-                init_key = INIT_KEY_EN;
-                end_key = END_KEY_EN;
+                init_key_1 = INIT_KEY_EN_1;
+                end_key_1 = END_KEY_EN_1;
+                init_key_2 = INIT_KEY_EN_2;
+                end_key_2 = END_KEY_EN_2;
                 data_key = DATA_KEY_EN;
                 split_key = SPLIT_KEY_EN;
                 title_year = YEAR_EN;
@@ -555,10 +567,10 @@ public class MainActivity extends ListActivity{
 
                     while ((line = bufReader.readLine()) != null) {
 
-                        if (line.contains(init_key))
+                        if (line.contains(init_key_1) || line.contains(init_key_2) )
                             read = true;
 
-                        if (line.contains(end_key))
+                        if (line.contains(end_key_1) || line.contains(end_key_2))
                             read = false;
 
                         if (read) {
@@ -592,6 +604,10 @@ public class MainActivity extends ListActivity{
                                 texto = year.split("\\|");
                                 year = texto[0];
                             }
+
+                            texto = year.split("\\(.*");
+                            year = texto[0];
+
 
                             result.put(TAG_YEAR, title_year+year);
 
@@ -681,8 +697,6 @@ public class MainActivity extends ListActivity{
 
                             }
                         }
-
-                        Collections.reverse(resultList);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -706,6 +720,8 @@ public class MainActivity extends ListActivity{
             /**
              * Updating parsed JSON data into ListView
              * */
+
+            Collections.reverse(resultList);
 
             ListAdapter adapter = new SimpleAdapter(MainActivity.this, resultList , R.layout.list_item, new String[]{TAG_YEAR, TAG_CONTENT, TAG_LINK}, new int[]{R.id.year, R.id.content, R.id.link});
 
