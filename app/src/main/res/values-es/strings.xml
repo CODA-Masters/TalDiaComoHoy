@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Tal dia como hoy</string>
     <string name="wait">Por favor espere...</string>
+
+    <string name="internet_error_title">Sin conexión</string>
+    <string name="internet_error_description">No hay conexión a internet. Por favor actívela y vuelva a intentar.</string>
+
+    <string name="action_mobile_data">Datos</string>
+    <string name="action_wifi">Wifi</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_settings">Opciones</string>
+
 </resources>

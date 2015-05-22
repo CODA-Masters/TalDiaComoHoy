@@ -251,15 +251,15 @@ public class MainActivity extends ListActivity{
         } else {
 
             AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
-            builder1.setTitle("Sin conexión");
-            builder1.setMessage("No hay conexión a internet. Por favor actívela y vuelva a intentar.");
+            builder1.setTitle(getString(R.string.internet_error_title));
+            builder1.setMessage(getString(R.string.internet_error_description));
 
-            builder1.setNegativeButton("Wifi", new DialogInterface.OnClickListener() {
+            builder1.setNegativeButton(getString(R.string.action_wifi), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
                 }
             });
-            builder1.setPositiveButton("Datos", new DialogInterface.OnClickListener() {
+            builder1.setPositiveButton(getString(R.string.action_mobile_data), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     Intent intent = new Intent();
                     intent.setComponent(new ComponentName(
@@ -269,7 +269,7 @@ public class MainActivity extends ListActivity{
                     startActivity(intent);
                 }
             });
-            builder1.setNeutralButton("Cancelar",
+            builder1.setNeutralButton(getString(R.string.action_cancel),
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
@@ -321,8 +321,6 @@ public class MainActivity extends ListActivity{
 
 
     public void onFabPressed(View view) {
-
-        //showOrLoadInterstital();
 
         final float startX = mFab.getX();
 
@@ -453,15 +451,15 @@ public class MainActivity extends ListActivity{
         } else {
 
             AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
-            builder1.setTitle("Sin conexión");
-            builder1.setMessage("No hay conexión a internet. Por favor actívela y vuelva a intentar.");
+            builder1.setTitle(getString(R.string.internet_error_title));
+            builder1.setMessage(getString(R.string.internet_error_description));
 
-            builder1.setNegativeButton("Wifi", new DialogInterface.OnClickListener() {
+            builder1.setNegativeButton(getString(R.string.action_wifi), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
                 }
             });
-            builder1.setPositiveButton("Datos", new DialogInterface.OnClickListener() {
+            builder1.setPositiveButton(getString(R.string.action_mobile_data), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     Intent intent = new Intent();
                     intent.setComponent(new ComponentName(
@@ -471,7 +469,7 @@ public class MainActivity extends ListActivity{
                     startActivity(intent);
                 }
             });
-            builder1.setNeutralButton("Cancelar",
+            builder1.setNeutralButton(getString(R.string.action_cancel),
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
@@ -530,7 +528,6 @@ public class MainActivity extends ListActivity{
             pDialog.show();
 
             resultList.clear();
-
         }
 
         @Override
@@ -726,6 +723,8 @@ public class MainActivity extends ListActivity{
             ListAdapter adapter = new SimpleAdapter(MainActivity.this, resultList , R.layout.list_item, new String[]{TAG_YEAR, TAG_CONTENT, TAG_LINK}, new int[]{R.id.year, R.id.content, R.id.link});
 
             setListAdapter(adapter);
+
+            showOrLoadInterstital();
 
         }
 

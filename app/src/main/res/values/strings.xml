@@ -2,9 +2,13 @@
     <string name="app_name">On this day</string>
 
     <string name="wait">Please wait...</string>
+    <string name="internet_error_title">Disconected</string>
+    <string name="internet_error_description">No internet connection. Please turn it on and try again.</string>
 
-
-    <string name="hello_world">Hello world!</string>
+    <string name="action_mobile_data">Mobile Data</string>
+    <string name="action_wifi">Wifi</string>
+    <string name="action_cancel">Cancel</string>
     <string name="action_settings">Settings</string>
+
     <string name="intersticial_ad_unit_id">ca-app-pub-2273861139088572/1931377448</string>
 </resources>
