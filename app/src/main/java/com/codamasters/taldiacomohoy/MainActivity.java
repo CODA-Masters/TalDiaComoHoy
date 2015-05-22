@@ -11,8 +11,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -24,9 +22,9 @@ import android.view.Display;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.AccelerateInterpolator;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
@@ -51,6 +49,7 @@ public class MainActivity extends ListActivity{
     private View mFab;
     private FrameLayout mFabContainer;
     private LinearLayout mControlsContainer;
+    private LinearLayout listContainer;
 
     public final static float SCALE_FACTOR = 13f;
     public final static int ANIMATION_DURATION = 300;
@@ -82,13 +81,13 @@ public class MainActivity extends ListActivity{
     ArrayList<HashMap<String, String>> resultList;
 
 
-    private Button button;
+    private ImageButton button;
     private DatePicker datePicker;
     private String[] months = {"enero","febrero","marzo","abril","mayo","junio","julio", "agosto","septiembre","octubre","noviembre","diciembre"};
     public static String text_uri;
     public static String text_title;
     private TextView tv;
-
+    private FrameLayout toolbar;
 
 
 
@@ -105,9 +104,11 @@ public class MainActivity extends ListActivity{
 
         mFabContainer = (FrameLayout) findViewById(R.id.fab_container);
         mControlsContainer = (LinearLayout) findViewById(R.id.media_controls_container);
+        listContainer = (LinearLayout) findViewById(R.id.contenedor_lista);
 
-        button = (Button) findViewById(R.id.buscar);
+        button = (ImageButton) findViewById(R.id.buscar);
         datePicker = (DatePicker) findViewById(R.id.date_picker);
+        toolbar = (FrameLayout) findViewById(R.id.toolbar);
 
         resultList = new ArrayList<HashMap<String, String>>();
 
@@ -127,8 +128,7 @@ public class MainActivity extends ListActivity{
 
         tv = (TextView) findViewById(R.id.date);
         tv.setText(MainActivity.text_title);
-        Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(),
-                R.drawable.cover);
+
 
         /*
         ListView lv = getListView();
@@ -238,7 +238,6 @@ public class MainActivity extends ListActivity{
                 if (Math.abs(startX - mFab.getX()) > MINIMUN_X_DISTANCE) {
 
                     if (!mRevealFlag) {
-                        mFabContainer.setY(mFabContainer.getY() + mFabSize / 2);
 
                         mFab.animate()
                                 .scaleXBy(SCALE_FACTOR)
@@ -260,9 +259,12 @@ public class MainActivity extends ListActivity{
 
             super.onAnimationEnd(animation);
 
-            mFab.setVisibility(View.INVISIBLE);
+            toolbar.setVisibility(View.GONE);
+            mFab.setVisibility(View.GONE);
+            listContainer.setVisibility(View.GONE);
             datePicker.setVisibility(View.VISIBLE);
             button.setVisibility(View.VISIBLE);
+
 
             mFabContainer.setBackgroundColor(getResources()
                     .getColor(R.color.brand_accent));
@@ -307,6 +309,8 @@ public class MainActivity extends ListActivity{
 
         datePicker.setVisibility(View.GONE);
         button.setVisibility(View.GONE);
+        toolbar.setVisibility(View.VISIBLE);
+        listContainer.setVisibility(View.VISIBLE);
 
         text_uri = text_title = "";
 
@@ -363,7 +367,6 @@ public class MainActivity extends ListActivity{
             animator.start();
         }
 
-        mFabContainer.setY(mFabContainer.getY() - mFabSize / 2);
 
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -379,6 +382,7 @@ public class MainActivity extends ListActivity{
         mFab.setY(fabY);
 
         mFab.setVisibility(View.VISIBLE);
+        toolbar.setVisibility(View.VISIBLE);
 
         mFabContainer.setBackgroundColor(0x00000000);
 
@@ -484,6 +488,9 @@ public class MainActivity extends ListActivity{
 
                                 for ( int z=1 ; z<splited_lines.length; z++) {
                                     text = text.concat(splited_lines[z]);
+                                    if(z != splited_lines.length-1){
+                                        text = text.concat(":");
+                                    }
                                 }
 
 

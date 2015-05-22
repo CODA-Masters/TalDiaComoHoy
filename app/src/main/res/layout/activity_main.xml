@@ -79,19 +79,24 @@
                 android:scaleX="0"
                 android:scaleY="0">
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Buscar"
+                <ImageButton
                     android:id="@+id/buscar"
-                    android:layout_below="@+id/date_picker"
+                    android:transitionName="button_fab"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:background="@drawable/ripple2"
+                    android:src="@drawable/icon_search"
+                    android:elevation="5dp"
+                    android:onClick="search"
                     android:layout_centerHorizontal="true"
-                    android:onClick="search"/>
+                    android:layout_below="@+id/date_picker" />
 
                 <DatePicker
                     android:id="@+id/date_picker"
                     android:layout_width="wrap_content"
                     android:layout_height="400dp"
+                    android:layout_marginTop="-40dp"
                     android:layout_alignParentTop="true">
                 </DatePicker>
 
@@ -123,6 +128,7 @@
     </FrameLayout>
 
     <LinearLayout
+        android:id="@+id/contenedor_lista"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar">
@@ -136,4 +142,3 @@
 
 
 </RelativeLayout>
-
