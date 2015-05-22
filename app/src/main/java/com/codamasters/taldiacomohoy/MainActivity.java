@@ -628,11 +628,11 @@ public class MainActivity extends ListActivity{
 
                             if (splited_lines.length > 1) {
 
-                                String text ="";
+                                String text = "";
 
-                                for ( int z=1 ; z<splited_lines.length; z++) {
+                                for (int z = 1; z < splited_lines.length; z++) {
                                     text = text.concat(splited_lines[z]);
-                                    if(z != splited_lines.length-1){
+                                    if (z != splited_lines.length - 1) {
                                         text = text.concat(":");
                                     }
                                 }
@@ -701,8 +701,10 @@ public class MainActivity extends ListActivity{
                                 text = text.substring(1);
 
                                 char[] stringArray = text.trim().toCharArray();
-                                stringArray[0] = Character.toUpperCase(stringArray[0]);
-                                text = new String(stringArray);
+                                if (stringArray.length > 0){
+                                    stringArray[0] = Character.toUpperCase(stringArray[0]);
+                                    text = new String(stringArray);
+                                }
 
                                 result.put(TAG_CONTENT, text);
                                 result.put(TAG_LINK, enlace);
