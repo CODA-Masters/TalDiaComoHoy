@@ -38,8 +38,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -64,10 +66,6 @@ public class MainActivity extends ListActivity{
 
     private ProgressDialog pDialog;
 
-    // URL to get contacts JSON
-    //private static String url_en = "http://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&titles=";
-    private static String url_es;
-
 
     // JSON Node names
     private static final String TAG_QUERY = "query";
@@ -83,11 +81,33 @@ public class MainActivity extends ListActivity{
 
     private ImageButton button;
     private DatePicker datePicker;
-    private String[] months = {"enero","febrero","marzo","abril","mayo","junio","julio", "agosto","septiembre","octubre","noviembre","diciembre"};
-    public static String text_uri;
-    public static String text_title;
-    private TextView tv;
     private FrameLayout toolbar;
+
+
+    private String[] months_es = {"enero","febrero","marzo","abril","mayo","junio","julio", "agosto","septiembre","octubre","noviembre","diciembre"};
+    private String[] months_en = {"January", "February", "March", "April","May","June","July","August","September","October","November","December"};
+
+    public static String text_uri_es, text_uri_en;
+    public static String text_title_es, text_title_en;
+    private static String url_es, url_en;
+    private TextView tv;
+
+    private static final String INIT_KEY_ES = "== Acontecimientos ==";
+    private static final String INIT_KEY_EN = "==Events==";
+
+    private static final String END_KEY_ES = "== Nacimientos ==";
+    private static final String END_KEY_EN = "==Births==";
+
+    private static final String DATA_KEY_ES = "Archivo";
+    private static final String DATA_KEY_EN = "File";
+
+    private static final String YEAR_ES = "Año ";
+    private static final String YEAR_EN = "Year ";
+
+    private static final String SPLIT_KEY_ES = ":";
+    private static final String SPLIT_KEY_EN = "&ndash;";
+
+    private String init_key, end_key, data_key, split_key, url, text_title, title_year;
 
 
 
@@ -119,15 +139,48 @@ public class MainActivity extends ListActivity{
         datePicker.setVisibility(View.GONE);
         button.setVisibility(View.GONE);
 
-        text_uri = text_title = "";
+        text_uri_es = text_title_es = "";
+        text_uri_en = text_title_es = "";
 
-        text_uri = day + "_de_" + months[month];
-        text_title = day + " de " + months[month];
+        text_uri_es = day + "_de_" + months_es[month];
+        text_title_es = day + " de " + months_es[month];
 
-        url_es = "http://es.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&titles=" + text_uri;
+        text_uri_en = months_en[month] + "_" + day;
+        text_title_en = months_en[month] + " " + day;
+
+        url_es = "http://es.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&titles=" + text_uri_es;
+        url_en = "http://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&titles=" + text_uri_en;
+
+
+        switch(Locale.getDefault().getDisplayLanguage()){
+            case "español": url = url_es;
+                text_title = text_title_es;
+                init_key = INIT_KEY_ES;
+                end_key = END_KEY_ES;
+                data_key = DATA_KEY_ES;
+                split_key = SPLIT_KEY_ES;
+                title_year = YEAR_ES;
+
+                break;
+            case "english": url = url_en;
+                text_title = text_title_en;
+                init_key = INIT_KEY_EN;
+                end_key = END_KEY_EN;
+                data_key = DATA_KEY_EN;
+                split_key = SPLIT_KEY_EN;
+                title_year = YEAR_EN;
+                break;
+            default: url = url_en;
+                text_title = text_title_en;
+                init_key = INIT_KEY_EN;
+                end_key = END_KEY_EN;
+                data_key = DATA_KEY_EN;
+                split_key = SPLIT_KEY_EN;
+                title_year = YEAR_EN;
+        }
 
         tv = (TextView) findViewById(R.id.date);
-        tv.setText(MainActivity.text_title);
+        tv.setText(text_title);
 
 
         /*
@@ -312,13 +365,32 @@ public class MainActivity extends ListActivity{
         toolbar.setVisibility(View.VISIBLE);
         listContainer.setVisibility(View.VISIBLE);
 
-        text_uri = text_title = "";
+        text_uri_es = text_title_es = "";
+        text_uri_en = text_title_es = "";
 
-        text_uri = day + "_de_" + months[month];
-        text_title = day + " de " + months[month];
+        text_uri_es = day + "_de_" + months_es[month];
+        text_title_es = day + " de " + months_es[month];
 
-        url_es = "http://es.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&titles=" + text_uri;
-        tv.setText(MainActivity.text_title);
+        text_uri_en = months_en[month] + "_" + day;
+        text_title_en = months_en[month] + " " + day;
+
+        url_es = "http://es.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&titles=" + text_uri_es;
+        url_en = "http://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&titles=" + text_uri_en;
+
+
+        switch(Locale.getDefault().getDisplayLanguage()){
+            case "español": url = url_es;
+                text_title = text_title_es;
+                break;
+            case "english": url = url_en;
+                text_title = text_title_en;
+                break;
+            default:    url = url_en;
+                text_title = text_title_en;
+        }
+
+        tv.setText(text_title);
+
 
         if (haveNetworkConnection()) {
             new GetResults().execute();
@@ -413,7 +485,7 @@ public class MainActivity extends ListActivity{
             ServiceHandler sh = new ServiceHandler();
 
             // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(url_es, ServiceHandler.GET);
+            String jsonStr = sh.makeServiceCall(url, ServiceHandler.GET);
 
             Log.d("Response: ", "> " + jsonStr);
 
@@ -441,14 +513,14 @@ public class MainActivity extends ListActivity{
 
                     while ((line = bufReader.readLine()) != null) {
 
-                        if (line.contains("== Acontecimientos =="))
+                        if (line.contains(init_key))
                             read = true;
 
-                        if (line.contains("== Nacimientos =="))
+                        if (line.contains(end_key))
                             read = false;
 
                         if (read) {
-                            if (!line.contains("Archivo"))
+                            if (!line.contains(data_key))
                                 lines.add(line);
                         }
 
@@ -457,7 +529,7 @@ public class MainActivity extends ListActivity{
                     for (int i = 2; i < lines.size() - 1; i++) {
 
                         HashMap<String, String> result = new HashMap<String, String>();
-                        String[] splited_lines = lines.get(i).split(":");
+                        String[] splited_lines = lines.get(i).split(split_key);
 
                         if (splited_lines != null) {
 
@@ -479,7 +551,7 @@ public class MainActivity extends ListActivity{
                                 year = texto[0];
                             }
 
-                            result.put(TAG_YEAR, year);
+                            result.put(TAG_YEAR, title_year+year);
 
 
                             if (splited_lines.length > 1) {
@@ -554,6 +626,11 @@ public class MainActivity extends ListActivity{
                                 }
 
                                 text = text.replace("&nbsp;", " ");
+                                text = text.substring(1);
+
+                                char[] stringArray = text.trim().toCharArray();
+                                stringArray[0] = Character.toUpperCase(stringArray[0]);
+                                text = new String(stringArray);
 
                                 result.put(TAG_CONTENT, text);
                                 result.put(TAG_LINK, enlace);
@@ -587,6 +664,8 @@ public class MainActivity extends ListActivity{
             /**
              * Updating parsed JSON data into ListView
              * */
+            Collections.reverse(resultList);
+
             ListAdapter adapter = new SimpleAdapter(MainActivity.this, resultList , R.layout.list_item, new String[]{TAG_YEAR, TAG_CONTENT, TAG_LINK}, new int[]{R.id.year, R.id.content, R.id.link});
 
             setListAdapter(adapter);
