@@ -10,5 +10,7 @@
     <string name="action_cancel">Cancel</string>
     <string name="action_settings">Settings</string>
 
+    <string name="share_chooser_title">Share this event</string>
+    <string name="share_sign">Shared from \"On this day\"</string>
 
 </resources>

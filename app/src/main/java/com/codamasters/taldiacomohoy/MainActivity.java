@@ -22,11 +22,13 @@ import android.view.Display;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.AccelerateInterpolator;
+import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -56,6 +58,7 @@ public class MainActivity extends ListActivity{
     private FrameLayout mFabContainer;
     private LinearLayout mControlsContainer;
     private LinearLayout listContainer;
+    private ListView lv;
 
     public final static float SCALE_FACTOR = 13f;
     public final static int ANIMATION_DURATION = 300;
@@ -129,8 +132,6 @@ public class MainActivity extends ListActivity{
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
 
         interstitialAd = new InterstitialAd(this);
         interstitialAd.setAdUnitId(getString(R.string.intersticial_ad_unit_id));
@@ -216,33 +217,24 @@ public class MainActivity extends ListActivity{
         tv.setText(text_title);
 
 
-        /*
         ListView lv = getListView();
 
         // Listview on item click listener
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view,
+                                           int position, long id) {
                 // getting values from selected ListItem
                 String year = ((TextView) view.findViewById(R.id.year)).getText().toString();
                 String content = ((TextView) view.findViewById(R.id.content)).getText().toString();
-                String link = ((TextView) view.findViewById(R.id.link)).getText().toString();
 
 
-                ListView list =  getListView();
-                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(InfoActivity.this, list, "list");
-                Intent intent = new Intent(InfoActivity.this, IndividualInfoActivity.class);
-                intent.putExtra("year", year);
-                intent.putExtra("content", content);
-                intent.putExtra("link", link);
-                startActivity(intent, options.toBundle());
-
+                shareAnswer(text_title + " - " + year + "\n\n" + content + "\n\n" + getString(R.string.share_sign));
+                return true;
             }
         });
-        */
 
 
         if (haveNetworkConnection()) {
@@ -448,6 +440,24 @@ public class MainActivity extends ListActivity{
         if (haveNetworkConnection()) {
             new GetResults().execute();
 
+            ListView lv = getListView();
+
+            // Listview on item click listener
+
+            lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view,
+                                               int position, long id) {
+                    // getting values from selected ListItem
+                    String year = ((TextView) view.findViewById(R.id.year)).getText().toString();
+                    String content = ((TextView) view.findViewById(R.id.content)).getText().toString();
+
+                    shareAnswer(text_title + " - " + year + "\n\n" + content + "\n\n" + getString(R.string.share_sign));
+                    return true;
+                }
+            });
+
         } else {
 
             AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
@@ -513,6 +523,13 @@ public class MainActivity extends ListActivity{
 
         mRevealFlag = false;
 
+    }
+
+    private void shareAnswer(String answer) {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, answer);
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_chooser_title)));
     }
 
 

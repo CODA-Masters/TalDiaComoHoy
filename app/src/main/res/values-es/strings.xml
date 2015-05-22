@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tal dia como hoy</string>
+    <string name="app_name">Tal día como hoy</string>
     <string name="wait">Por favor espere...</string>
 
     <string name="internet_error_title">Sin conexión</string>
@@ -9,5 +9,8 @@
     <string name="action_wifi">Wifi</string>
     <string name="action_cancel">Cancelar</string>
     <string name="action_settings">Opciones</string>
+
+    <string name="share_chooser_title">Comparte este acontecimiento</string>
+    <string name="share_sign">Compartido desde \"Tal día como hoy\"</string>
 
 </resources>
