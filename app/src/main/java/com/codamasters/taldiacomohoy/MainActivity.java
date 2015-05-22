@@ -30,6 +30,10 @@ import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -110,12 +114,29 @@ public class MainActivity extends ListActivity{
     private String init_key, end_key, data_key, split_key, url, text_title, title_year;
 
 
+    private InterstitialAd interstitialAd;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getString(R.string.intersticial_ad_unit_id));
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+            }
+            @Override
+            public void onAdClosed() {
+            }
+        });
+
 
         mFab = findViewById(R.id.fab);
         fabX = mFab.getX();
@@ -249,6 +270,25 @@ public class MainActivity extends ListActivity{
 
     }
 
+    public void showOrLoadInterstital() {
+        try {
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    if (interstitialAd.isLoaded()) {
+                        interstitialAd.show();
+                    }
+                    else {
+                        AdRequest interstitialRequest = new AdRequest.Builder().build();
+                        interstitialAd.loadAd(interstitialRequest);
+                    }
+
+
+                }
+            });
+        } catch (Exception e) {
+        }
+    }
+
 
     private boolean haveNetworkConnection() {
         boolean haveConnectedWifi = false;
@@ -269,6 +309,8 @@ public class MainActivity extends ListActivity{
 
 
     public void onFabPressed(View view) {
+
+        //showOrLoadInterstital();
 
         final float startX = mFab.getX();
 
@@ -303,6 +345,7 @@ public class MainActivity extends ListActivity{
                 }
             }
         });
+
     }
 
     private AnimatorListenerAdapter mEndRevealListener = new AnimatorListenerAdapter() {
@@ -460,7 +503,6 @@ public class MainActivity extends ListActivity{
 
         mRevealFlag = false;
 
-
     }
 
 
@@ -471,7 +513,7 @@ public class MainActivity extends ListActivity{
             super.onPreExecute();
             // Showing progress dialog
             pDialog = new ProgressDialog(MainActivity.this);
-            pDialog.setMessage("Por favor espere...");
+            pDialog.setMessage(getString(R.string.wait));
             pDialog.setCancelable(false);
             pDialog.show();
 
@@ -640,7 +682,7 @@ public class MainActivity extends ListActivity{
                             }
                         }
 
-                        //Collections.reverse(resultList);
+                        Collections.reverse(resultList);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -664,7 +706,6 @@ public class MainActivity extends ListActivity{
             /**
              * Updating parsed JSON data into ListView
              * */
-            Collections.reverse(resultList);
 
             ListAdapter adapter = new SimpleAdapter(MainActivity.this, resultList , R.layout.list_item, new String[]{TAG_YEAR, TAG_CONTENT, TAG_LINK}, new int[]{R.id.year, R.id.content, R.id.link});
 
