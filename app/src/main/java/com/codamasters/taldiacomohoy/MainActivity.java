@@ -125,6 +125,8 @@ public class MainActivity extends ListActivity{
 
     private InterstitialAd interstitialAd;
 
+    private int counter = 0;
+
 
 
     @Override
@@ -314,39 +316,50 @@ public class MainActivity extends ListActivity{
 
     public void onFabPressed(View view) {
 
-        final float startX = mFab.getX();
+        if (android.os.Build.VERSION.SDK_INT>=21) {
 
-        AnimatorPath path = new AnimatorPath();
-        path.moveTo(0, 0);
-        path.curveTo(-200, 200, -400, 100, -600, 50);
+            final float startX = mFab.getX();
 
-        final ObjectAnimator anim = ObjectAnimator.ofObject(this, "fabLoc",
-                new PathEvaluator(), path.getPoints().toArray());
+            AnimatorPath path = new AnimatorPath();
+            path.moveTo(0, 0);
+            path.curveTo(-200, 200, -400, 100, -600, 50);
 
-        anim.setInterpolator(new AccelerateInterpolator());
-        anim.setDuration(ANIMATION_DURATION);
-        anim.start();
+            final ObjectAnimator anim = ObjectAnimator.ofObject(this, "fabLoc",
+                    new PathEvaluator(), path.getPoints().toArray());
 
-        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            anim.setInterpolator(new AccelerateInterpolator());
+            anim.setDuration(ANIMATION_DURATION);
+            anim.start();
 
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
+            anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
-                if (Math.abs(startX - mFab.getX()) > MINIMUN_X_DISTANCE) {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
 
-                    if (!mRevealFlag) {
+                    if (Math.abs(startX - mFab.getX()) > MINIMUN_X_DISTANCE) {
 
-                        mFab.animate()
-                                .scaleXBy(SCALE_FACTOR)
-                                .scaleYBy(SCALE_FACTOR)
-                                .setListener(mEndRevealListener)
-                                .setDuration(ANIMATION_DURATION);
+                        if (!mRevealFlag) {
 
-                        mRevealFlag = true;
+                            mFab.animate()
+                                    .scaleXBy(SCALE_FACTOR)
+                                    .scaleYBy(SCALE_FACTOR)
+                                    .setListener(mEndRevealListener)
+                                    .setDuration(ANIMATION_DURATION);
+
+                            mRevealFlag = true;
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
+        else{
+            toolbar.setVisibility(View.GONE);
+            mFab.setVisibility(View.GONE);
+            listContainer.setVisibility(View.GONE);
+            datePicker.setVisibility(View.VISIBLE);
+            button.setVisibility(View.VISIBLE);
+            mFabContainer.setBackgroundColor(getResources().getColor(R.color.brand_accent));
+        }
 
     }
 
@@ -423,14 +436,17 @@ public class MainActivity extends ListActivity{
         url_en = "http://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&titles=" + text_uri_en;
 
 
-        switch(Locale.getDefault().getDisplayLanguage()){
-            case "español": url = url_es;
+        switch (Locale.getDefault().getDisplayLanguage()) {
+            case "español":
+                url = url_es;
                 text_title = text_title_es;
                 break;
-            case "english": url = url_en;
+            case "english":
+                url = url_en;
                 text_title = text_title_en;
                 break;
-            default:    url = url_en;
+            default:
+                url = url_en;
                 text_title = text_title_en;
         }
 
@@ -491,15 +507,18 @@ public class MainActivity extends ListActivity{
         }
 
 
-        for (int i = 0; i < mControlsContainer.getChildCount(); i++) {
+        if (android.os.Build.VERSION.SDK_INT >= 21){
 
-            View v = mControlsContainer.getChildAt(i);
-            ViewPropertyAnimator animator = v.animate()
-                    .scaleX(0).scaleY(0)
-                    .setDuration(ANIMATION_DURATION);
+            for (int i = 0; i < mControlsContainer.getChildCount(); i++) {
 
-            animator.setStartDelay(i * 50);
-            animator.start();
+                View v = mControlsContainer.getChildAt(i);
+                ViewPropertyAnimator animator = v.animate()
+                        .scaleX(0).scaleY(0)
+                        .setDuration(ANIMATION_DURATION);
+
+                animator.setStartDelay(i * 50);
+                animator.start();
+            }
         }
 
 
@@ -743,7 +762,11 @@ public class MainActivity extends ListActivity{
 
             setListAdapter(adapter);
 
-            showOrLoadInterstital();
+            if( counter%2 == 1) {
+                showOrLoadInterstital();
+            }
+
+            counter++;
 
         }
 
