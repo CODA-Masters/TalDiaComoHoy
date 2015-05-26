@@ -23,6 +23,7 @@
         android:minHeight="?attr/actionBarSize"
         android:layout_below="@+id/album_cover"
         android:paddingLeft="72dp"
+        android:elevation="4dp"
         android:background="?attr/colorPrimary"
         >
 
@@ -60,6 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="-30dp"
+        android:elevation="10dp"
         android:layout_below="@+id/album_cover"
         >
 
@@ -80,11 +82,13 @@
 
                 <ImageButton
                     android:id="@+id/buscar"
+                    android:transitionName="button_fab"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:background="@drawable/ripple2"
                     android:src="@drawable/icon_search"
+                    android:elevation="5dp"
                     android:onClick="search"
                     android:layout_centerHorizontal="true"
                     android:layout_below="@+id/date_picker" />
@@ -93,23 +97,32 @@
                     android:id="@+id/date_picker"
                     android:layout_width="wrap_content"
                     android:layout_height="400dp"
-                    android:datePickerMode="spinner"
-                    android:calendarViewShown="false"
+                    android:layout_marginTop="-40dp"
                     android:layout_alignParentTop="true">
                 </DatePicker>
 
             </RelativeLayout>
 
+            <!--<ImageView
+                android:layout_width="wrap_content"
+                android:scaleX="0"
+                android:scaleY="0"
+                android:layout_height="wrap_content"
+                android:src="@drawable/search_button"
+                />-->
+
         </LinearLayout>
 
         <ImageButton
             android:id="@+id/fab"
+            android:transitionName="button_fab"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_gravity="top|right"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:background="@drawable/ripple"
             android:src="@drawable/icon_search"
+            android:elevation="5dp"
             android:onClick="onFabPressed"
             />
 
@@ -119,7 +132,6 @@
         android:id="@+id/contenedor_lista"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_below="@+id/toolbar">
 
         <ListView

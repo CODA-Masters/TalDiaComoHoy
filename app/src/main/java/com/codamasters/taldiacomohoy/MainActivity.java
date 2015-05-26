@@ -29,6 +29,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -58,7 +59,6 @@ public class MainActivity extends ListActivity{
     private FrameLayout mFabContainer;
     private LinearLayout mControlsContainer;
     private LinearLayout listContainer;
-    private ListView lv;
 
     public final static float SCALE_FACTOR = 13f;
     public final static int ANIMATION_DURATION = 300;
@@ -127,6 +127,9 @@ public class MainActivity extends ListActivity{
 
     private int counter = 0;
 
+    private RelativeLayout dateContainer;
+    private ListView lv;
+
 
 
     @Override
@@ -155,6 +158,7 @@ public class MainActivity extends ListActivity{
         mFabContainer = (FrameLayout) findViewById(R.id.fab_container);
         mControlsContainer = (LinearLayout) findViewById(R.id.media_controls_container);
         listContainer = (LinearLayout) findViewById(R.id.contenedor_lista);
+        dateContainer = (RelativeLayout) findViewById(R.id.date_container);
 
         button = (ImageButton) findViewById(R.id.buscar);
         datePicker = (DatePicker) findViewById(R.id.date_picker);
@@ -219,7 +223,7 @@ public class MainActivity extends ListActivity{
         tv.setText(text_title);
 
 
-        ListView lv = getListView();
+        lv = getListView();
 
         // Listview on item click listener
 
@@ -353,12 +357,15 @@ public class MainActivity extends ListActivity{
             });
         }
         else{
+            mFabContainer.setBackgroundColor(getResources().getColor(R.color.brand_accent));
             toolbar.setVisibility(View.GONE);
             mFab.setVisibility(View.GONE);
+            dateContainer.setScaleX(1);
+            dateContainer.setScaleY(1);
+
             listContainer.setVisibility(View.GONE);
             datePicker.setVisibility(View.VISIBLE);
             button.setVisibility(View.VISIBLE);
-            mFabContainer.setBackgroundColor(getResources().getColor(R.color.brand_accent));
         }
 
     }
@@ -454,6 +461,7 @@ public class MainActivity extends ListActivity{
 
 
         if (haveNetworkConnection()) {
+
             new GetResults().execute();
 
             ListView lv = getListView();
@@ -519,6 +527,10 @@ public class MainActivity extends ListActivity{
                 animator.setStartDelay(i * 50);
                 animator.start();
             }
+        }
+        else{
+            dateContainer.setScaleX(0);
+            dateContainer.setScaleY(0);
         }
 
 
@@ -760,7 +772,9 @@ public class MainActivity extends ListActivity{
 
             ListAdapter adapter = new SimpleAdapter(MainActivity.this, resultList , R.layout.list_item, new String[]{TAG_YEAR, TAG_CONTENT, TAG_LINK}, new int[]{R.id.year, R.id.content, R.id.link});
 
-            setListAdapter(adapter);
+            //setListAdapter(adapter);
+
+            lv.setAdapter(adapter);
 
             if( counter%2 == 1) {
                 showOrLoadInterstital();
