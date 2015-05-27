@@ -223,7 +223,8 @@ public class MainActivity extends ListActivity{
         tv.setText(text_title);
 
 
-        lv = getListView();
+        //lv = getListView();
+        lv = (ListView) findViewById(R.id.list);
 
         // Listview on item click listener
 
@@ -770,11 +771,13 @@ public class MainActivity extends ListActivity{
 
             Collections.reverse(resultList);
 
+            ListView lv1 = (ListView) findViewById(R.id.list);
+
+
             ListAdapter adapter = new SimpleAdapter(MainActivity.this, resultList , R.layout.list_item, new String[]{TAG_YEAR, TAG_CONTENT, TAG_LINK}, new int[]{R.id.year, R.id.content, R.id.link});
 
-            //setListAdapter(adapter);
-
-            lv.setAdapter(adapter);
+            // setListAdapter(adapter);
+            lv1.setAdapter(adapter);
 
             if( counter%2 == 1) {
                 showOrLoadInterstital();
