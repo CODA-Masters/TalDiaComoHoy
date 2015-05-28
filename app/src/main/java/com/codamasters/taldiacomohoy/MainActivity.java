@@ -32,6 +32,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -263,12 +264,17 @@ public class MainActivity extends ListActivity{
             });
             builder1.setPositiveButton(getString(R.string.action_mobile_data), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    Intent intent = new Intent();
-                    intent.setComponent(new ComponentName(
-                            "com.android.settings",
-                            "com.android.settings.Settings$DataUsageSummaryActivity"));
-                    //startActivity(new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS);
-                    startActivity(intent);
+                    try {
+                        Intent intent = new Intent();
+                        intent.setComponent(new ComponentName(
+                                "com.android.settings",
+                                "com.android.settings.Settings$DataUsageSummaryActivity"));
+                        //startActivity(new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS);
+                        startActivity(intent);
+                    }
+                    catch(Exception e){
+                        Toast.makeText(MainActivity.this,getString(R.string.error_roaming), Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
             builder1.setNeutralButton(getString(R.string.action_cancel),
@@ -499,12 +505,18 @@ public class MainActivity extends ListActivity{
             });
             builder1.setPositiveButton(getString(R.string.action_mobile_data), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    Intent intent = new Intent();
-                    intent.setComponent(new ComponentName(
-                            "com.android.settings",
-                            "com.android.settings.Settings$DataUsageSummaryActivity"));
-                    //startActivity(new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS);
-                    startActivity(intent);
+                    try {
+                        Intent intent = new Intent();
+                        intent.setComponent(new ComponentName(
+                                "com.android.settings",
+                                "com.android.settings.Settings$DataUsageSummaryActivity"));
+                        //startActivity(new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS);
+                        startActivity(intent);
+                    }
+                    catch(Exception e){
+                        Toast.makeText(MainActivity.this,getString(R.string.error_roaming), Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             });
             builder1.setNeutralButton(getString(R.string.action_cancel),

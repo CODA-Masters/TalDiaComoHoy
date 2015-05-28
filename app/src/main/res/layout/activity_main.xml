@@ -92,7 +92,7 @@
                 <DatePicker
                     android:id="@+id/date_picker"
                     android:layout_width="wrap_content"
-                    android:layout_height="400dp"
+                    android:layout_height="300dp"
                     android:datePickerMode="spinner"
                     android:calendarViewShown="false"
                     android:layout_alignParentTop="true">

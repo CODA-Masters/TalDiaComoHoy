@@ -12,6 +12,7 @@
 
     <string name="share_chooser_title">Share this event</string>
     <string name="share_sign">Shared from \"On this day\"</string>
+    <string name="error_roaming">Sorry, this functionality is not available</string>
 
     <string name="intersticial_ad_unit_id">ca-app-pub-2273861139088572/1931377448</string>
 
