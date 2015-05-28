@@ -222,9 +222,12 @@ public class MainActivity extends ListActivity{
         tv = (TextView) findViewById(R.id.date);
         tv.setText(text_title);
 
+        if (android.os.Build.VERSION.SDK_INT>=21) {
+            lv = getListView();
 
-        //lv = getListView();
-        lv = (ListView) findViewById(R.id.list);
+        }else{
+            lv = (ListView) findViewById(R.id.list);
+        }
 
         // Listview on item click listener
 
@@ -776,8 +779,12 @@ public class MainActivity extends ListActivity{
 
             ListAdapter adapter = new SimpleAdapter(MainActivity.this, resultList , R.layout.list_item, new String[]{TAG_YEAR, TAG_CONTENT, TAG_LINK}, new int[]{R.id.year, R.id.content, R.id.link});
 
-            // setListAdapter(adapter);
-            lv1.setAdapter(adapter);
+
+            if (android.os.Build.VERSION.SDK_INT>=21) {
+                setListAdapter(adapter);
+            }else{
+                lv1.setAdapter(adapter);
+            }
 
             if( counter%2 == 1) {
                 showOrLoadInterstital();
