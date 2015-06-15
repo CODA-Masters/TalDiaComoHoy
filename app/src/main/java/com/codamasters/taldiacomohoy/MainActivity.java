@@ -55,11 +55,11 @@ import java.util.Map;
 
 public class MainActivity extends ListActivity{
 
-    // Animations
-    private View mFab;
-    private FrameLayout mFabContainer;
-    private LinearLayout mControlsContainer;
-    private LinearLayout listContainer;
+    // Objetos de animación y contenedores
+    private View mFab; // botón de buscar
+    private FrameLayout mFabContainer; // contenedor del botón de buscar
+    private LinearLayout mControlsContainer; // contenedor de la barra superior
+    private LinearLayout listContainer; // contenedor de la lista
 
     public final static float SCALE_FACTOR = 13f;
     public final static int ANIMATION_DURATION = 300;
@@ -70,7 +70,7 @@ public class MainActivity extends ListActivity{
     private float fabX, fabY;
 
 
-    // Information
+    // Información
 
     private ProgressDialog pDialog;
 
@@ -83,22 +83,25 @@ public class MainActivity extends ListActivity{
 
     private String[] texto;
 
-    // Hashmap for ListView
+    // Hashmap para la ListView
     ArrayList<HashMap<String, String>> resultList;
 
+    // Objetos de interacción
+    private ImageButton button; // botón para confirmar fecha
+    private DatePicker datePicker; // selector de fecha
+    private FrameLayout toolbar; // barra de arriba con el botón de buscar y texto informativo
 
-    private ImageButton button;
-    private DatePicker datePicker;
-    private FrameLayout toolbar;
-
-
+    // Arrays con los meses del año
     private String[] months_es = {"enero","febrero","marzo","abril","mayo","junio","julio", "agosto","septiembre","octubre","noviembre","diciembre"};
     private String[] months_en = {"January", "February", "March", "April","May","June","July","August","September","October","November","December"};
 
+    // Variables de URLs para parsear
     public static String text_uri_es, text_uri_en;
     public static String text_title_es, text_title_en;
     private static String url_es, url_en;
     private TextView tv;
+
+    // Palabras clave que actúan de separadores
 
     private static final String INIT_KEY_ES_1 = "==Acontecimientos==";
     private static final String INIT_KEY_EN_1 = "==Events==";
@@ -139,6 +142,7 @@ public class MainActivity extends ListActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Crear objeto intersticial de publicidad
         interstitialAd = new InterstitialAd(this);
         interstitialAd.setAdUnitId(getString(R.string.intersticial_ad_unit_id));
         interstitialAd.setAdListener(new AdListener() {
@@ -150,7 +154,7 @@ public class MainActivity extends ListActivity{
             }
         });
 
-
+        // Asignamos los objetos buscando los elementos gráficos declarados en el XML
         mFab = findViewById(R.id.fab);
         fabX = mFab.getX();
         fabY = mFab.getY();
@@ -165,14 +169,18 @@ public class MainActivity extends ListActivity{
         datePicker = (DatePicker) findViewById(R.id.date_picker);
         toolbar = (FrameLayout) findViewById(R.id.toolbar);
 
+        // Creamos lista de resultados del parseo
         resultList = new ArrayList<HashMap<String, String>>();
 
-
+        // Obtenemos día y mes del DatePicker
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth();
 
+        // Hacemos desaparecer el DatePicker y el botón de confirmar
         datePicker.setVisibility(View.GONE);
         button.setVisibility(View.GONE);
+
+        // Damos formato al parseo en función del idioma elegido
 
         text_uri_es = text_title_es = "";
         text_uri_en = text_title_es = "";
@@ -220,6 +228,7 @@ public class MainActivity extends ListActivity{
                 title_year = YEAR_EN;
         }
 
+        // Distinguimos la forma de obtener la lista en función de la versión del SDK
         tv = (TextView) findViewById(R.id.date);
         tv.setText(text_title);
 
@@ -230,10 +239,11 @@ public class MainActivity extends ListActivity{
             lv = (ListView) findViewById(R.id.list);
         }
 
-        // Listview on item click listener
+        // Listview on item long click listener
 
         lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
+            // Intent de compartir evento en las redes
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view,
                                            int position, long id) {
@@ -247,6 +257,8 @@ public class MainActivity extends ListActivity{
             }
         });
 
+        // Obtenemos resultados del parseo si disponemos de conexión a Internet.
+        // En otro caso abrimos un Intent para activar la conexión WiFi o de datos.
 
         if (haveNetworkConnection()) {
             new GetResults().execute();
@@ -290,6 +302,7 @@ public class MainActivity extends ListActivity{
 
     }
 
+    // Método que carga/abre un intersticial de publicidad
     public void showOrLoadInterstital() {
         try {
             runOnUiThread(new Runnable() {
@@ -310,6 +323,7 @@ public class MainActivity extends ListActivity{
     }
 
 
+    // Función que comprueba si disponemos de conexión a Internet
     private boolean haveNetworkConnection() {
         boolean haveConnectedWifi = false;
         boolean haveConnectedMobile = false;
@@ -328,8 +342,11 @@ public class MainActivity extends ListActivity{
     }
 
 
+    // Evento al pulsar botón de búsqueda
+
     public void onFabPressed(View view) {
 
+        // Si estamos en el SDK 21 utilizar animación de Material Design
         if (android.os.Build.VERSION.SDK_INT>=21) {
 
             final float startX = mFab.getX();
@@ -366,6 +383,8 @@ public class MainActivity extends ListActivity{
                 }
             });
         }
+
+        // En otro caso simplemente hacer desaparecer los elementos y aparecer los nuevos
         else{
             mFabContainer.setBackgroundColor(getResources().getColor(R.color.brand_accent));
             toolbar.setVisibility(View.GONE);
@@ -380,6 +399,7 @@ public class MainActivity extends ListActivity{
 
     }
 
+    // Listener de la animación
     private AnimatorListenerAdapter mEndRevealListener = new AnimatorListenerAdapter() {
 
         @Override
@@ -429,6 +449,7 @@ public class MainActivity extends ListActivity{
             mFab.setTranslationY(newLoc.mY);
     }
 
+    // Parsear como hemos hecho en el método onCreate cuando se pulsa en el botón de buscar
     public void search(View view) {
 
 
@@ -530,7 +551,7 @@ public class MainActivity extends ListActivity{
             alert11.show();
         }
 
-
+        // Realizamos animación al pulsar el botón de buscar en caso de SDK >= 21
         if (android.os.Build.VERSION.SDK_INT >= 21){
 
             for (int i = 0; i < mControlsContainer.getChildCount(); i++) {
@@ -572,6 +593,7 @@ public class MainActivity extends ListActivity{
 
     }
 
+    // Acción de abrir Intent de compartir evento
     private void shareAnswer(String answer) {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
@@ -580,8 +602,10 @@ public class MainActivity extends ListActivity{
     }
 
 
+    // Obtener resultados de la búsqueda de manera asíncrona
     private class GetResults extends AsyncTask<Void, Void, Void> {
 
+        // Antes de ejecutar añadimos un diálogo de progreso
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -594,6 +618,7 @@ public class MainActivity extends ListActivity{
             resultList.clear();
         }
 
+        // Realizamos la operación de parseo
         @Override
         protected Void doInBackground(Void... arg0) {
             // Creating service handler class instance
@@ -774,6 +799,8 @@ public class MainActivity extends ListActivity{
             return null;
         }
 
+        // Después de obtener los datos revertimos el array para obtener las fechas más recientes primero,
+        // metemos los resultados en la ListView y mostramos la publicidad cada 4 intentos.
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
@@ -792,12 +819,14 @@ public class MainActivity extends ListActivity{
             ListAdapter adapter = new SimpleAdapter(MainActivity.this, resultList , R.layout.list_item, new String[]{TAG_YEAR, TAG_CONTENT, TAG_LINK}, new int[]{R.id.year, R.id.content, R.id.link});
 
 
+            // De nuevo el adaptador de la ListView es distinto según la versión del SDK
             if (android.os.Build.VERSION.SDK_INT>=21) {
                 setListAdapter(adapter);
             }else{
                 lv1.setAdapter(adapter);
             }
 
+            // Carga/muestra publicadad. Aparecerá cada 4 intentos.
             if( counter%2 == 1) {
                 showOrLoadInterstital();
             }
@@ -806,7 +835,7 @@ public class MainActivity extends ListActivity{
 
         }
 
-
+        // Función para obtener un Map de strings a partir de un objeto JSON
         public Map<String, String> parse(JSONObject json, Map<String, String> out) throws JSONException {
             Iterator<String> keys = json.keys();
             while (keys.hasNext()) {
